@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Visualize",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/deepwriting/visualize_hw.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "-D",
+                "./deepwriting/data/deepwriting_validation.npz",
+                "-O",
+                "./deepwriting/data_images",
+                "-S",
+                "1"
+            ]
+            
+        },
+        {
+            "name": "Evaluate",
+            "type": "python",
+            "request": "launch",
+            "program": "./deepwriting/tf_evaluate_hw.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-S",
+                "deepwriting/save",
+                "-M",
+                "model",
+                "-QL"
+            ]
+        }
+    ]
+}
