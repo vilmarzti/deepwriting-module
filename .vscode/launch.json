@@ -19,11 +19,11 @@
             "console": "integratedTerminal",
             "args": [
                 "-D",
-                "./deepwriting/data/deepwriting_validation.npz",
+                "./deepwriting/data/deepwriting_training.npz",
                 "-O",
                 "./deepwriting/data_images",
                 "-S",
-                "1"
+                "0"
             ]
         },
         {
