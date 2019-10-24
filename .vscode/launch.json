@@ -5,12 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Classify",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/deepwriting/classify_hw.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Visualize",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/deepwriting/visualize_hw.py",
             "console": "integratedTerminal",
-            "args" : [
+            "args": [
                 "-D",
                 "./deepwriting/data/deepwriting_validation.npz",
                 "-O",
@@ -18,7 +25,6 @@
                 "-S",
                 "1"
             ]
-            
         },
         {
             "name": "Evaluate",
