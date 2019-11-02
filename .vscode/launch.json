@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "JSON to Numpy",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/deepwriting/data_scripts/json_to_numpy.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-input_file", "${workspaceFolder}/deepwriting/data/hello_world.json",
+                "-out_dir", "${workspaceFolder}/deepwriting/data/"
+            ]
+        },
+        {
             "name": "Classify",
             "type": "python",
             "request": "launch",
