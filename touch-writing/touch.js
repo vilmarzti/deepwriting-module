@@ -1,3 +1,5 @@
+const deepwriting_server = "http://localhost:5000"
+const xhr = new XMLHttpRequest();
 let canvas;
 let ctx;
 let offset_x;
@@ -8,7 +10,7 @@ let touchmove_pos;
 
 let touchhistory = [];
 
-window.onload = () => {
+window.onload = function() {
     canvas = document.getElementsByTagName('canvas')[0];
     ctx = canvas.getContext('2d');
     offset_x = canvas.offsetLeft;
@@ -19,6 +21,12 @@ window.onload = () => {
     canvas.addEventListener('mousedown', mousedown);
     canvas.addEventListener('mousemove', mousemove);
     canvas.addEventListener('mouseup', mouseup)
+}
+
+xhr.onreadystatechange = function() {
+    if( this.readyState === XMLHttpRequest.DONE && this.status == 200){
+        console.log(xhr.responseText)
+    }
 }
 
 
@@ -102,6 +110,18 @@ function download() {
     a.download = 'hello_world.json'
     a.innerHTML = 'Download'
     a.click()
+}
+
+function send(){
+    let object = {}
+    object['wholeword_segments'] = "";
+    object['word_ascii'] = "";
+    object['word_stroke'] = touchhistory;
+
+
+    xhr.open("POST", deepwriting_server, true)
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+    xhr.send(JSON.stringify(object))
 }
 
 function getRelativePosition([x, y]) {

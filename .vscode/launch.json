@@ -5,20 +5,39 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Flask",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "${workspaceFolder}/deepwriting/server.py",
+                "FLASK_ENV": "development",
+                "FLASK_DEBUG": "0"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload"
+            ],
+            "jinja": true
+        },
+        {
             "name": "Preprocessing",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/deepwriting/data_scripts/preprocessing.py",
             "console": "integratedTerminal",
             "args": [
-                "-data_file", "${workspaceFolder}/deepwriting/data/deepwriting-data.npz",
-                "-out_dir", "${workspaceFolder}/deepwriting/data",
-                "-out_file", "data_preprocessed",
+                "-data_file",
+                "${workspaceFolder}/deepwriting/data/deepwriting-data.npz",
+                "-out_dir",
+                "${workspaceFolder}/deepwriting/data",
+                "-out_file",
+                "data_preprocessed",
                 "-translate",
                 "-standardize",
                 "-diff",
             ]
-
         },
         {
             "name": "JSON to Numpy",
