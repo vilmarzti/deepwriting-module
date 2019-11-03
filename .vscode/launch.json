@@ -5,14 +5,33 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Preprocessing",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/deepwriting/data_scripts/preprocessing.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-data_file", "${workspaceFolder}/deepwriting/data/deepwriting-data.npz",
+                "-out_dir", "${workspaceFolder}/deepwriting/data",
+                "-out_file", "data_preprocessed",
+                "-translate",
+                "-standardize",
+                "-diff",
+            ]
+
+        },
+        {
             "name": "JSON to Numpy",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/deepwriting/data_scripts/json_to_numpy.py",
             "console": "integratedTerminal",
             "args": [
-                "-input_file", "${workspaceFolder}/deepwriting/data/hello_world.json",
-                "-out_dir", "${workspaceFolder}/deepwriting/data/"
+                "-input_file",
+                "${workspaceFolder}/deepwriting/data/hello_world.json",
+                "-out_dir",
+                "${workspaceFolder}/deepwriting/data/",
+                "-scale"
             ]
         },
         {
