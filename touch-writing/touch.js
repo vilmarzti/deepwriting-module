@@ -25,7 +25,8 @@ window.onload = function() {
 
 xhr.onreadystatechange = function() {
     if( this.readyState === XMLHttpRequest.DONE && this.status == 200){
-        console.log(xhr.responseText)
+        console.log(xhr.responseText);
+        document.getElementById('text').innerHTML = xhr.ResponseText;
     }
 }
 
