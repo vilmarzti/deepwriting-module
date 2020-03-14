@@ -26,7 +26,7 @@ window.onload = function() {
 xhr.onreadystatechange = function() {
     if( this.readyState === XMLHttpRequest.DONE && this.status == 200){
         console.log(xhr.responseText);
-        document.getElementById('text').innerHTML = xhr.ResponseText;
+        document.getElementById('text').innerHTML = xhr.responseText;
     }
 }
 
@@ -99,7 +99,7 @@ function clearCanvas() {
 
 function download() {
     let object = {};
-    object['test2'] = {};
+    object['test2'] = {};ipynb
     object['test2']['wholeword_segments'] = "";
     object['test2']['word_ascii'] = "";
     object['test2']['word_stroke'] = touchhistory;
@@ -119,10 +119,11 @@ function send(){
     object['word_ascii'] = "";
     object['word_stroke'] = touchhistory;
 
+    document.getElementById('text').text = '';
 
-    xhr.open("POST", deepwriting_server, true)
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-    xhr.send(JSON.stringify(object))
+    xhr.open("POST", deepwriting_server, true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.send(JSON.stringify(object));
 }
 
 function getRelativePosition([x, y]) {
