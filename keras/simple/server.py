@@ -25,6 +25,7 @@ def evaluate():
     result = process_result(model_output, alphabet)
     return result
 
+
 def process_result(result, alphabet):
     bow_positions = np.where(result[2] > 0.8)[1]
     eoc_positions = np.where(result[1] > 0.8)[1]
