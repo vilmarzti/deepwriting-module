@@ -94,6 +94,7 @@ function touch_event(type, x, y, pen) {
 
 function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('text').innerHTML = "";
     touchhistory = []
 }
 

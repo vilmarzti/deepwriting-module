@@ -20,10 +20,12 @@ alphabet.insert(1, '\t')  # start of sequence
 alphabet.insert(2, '\n')  # end of sequence
 
 
-encoder_space = 256
+max_decoder_seq_length = 100
+
+encoder_space = 512
 decoder_space = encoder_space * 2
 
-model = load_model(path.join(variables.WORKSPACEFOLDER, 'keras/seq2seq/model/best_model_seq2seq_256.hdf5'))
+model = load_model(path.join(variables.WORKSPACEFOLDER, 'keras/seq2seq/model/best_model_seq2seq_512.hdf5'))
 
 
 @app.route('/', methods=['POST'])
@@ -53,19 +55,46 @@ def inference(model_input):
     decoder_states = [decoder_state_h, decoder_state_h]
     decoder_outputs = model.get_layer('dense_decoder')(decoder_outputs)
 
+    decoder_model = Model(
+        [model.get_layer('decoder_input').output] + decoder_state_inputs,
+        [decoder_outputs] + decoder_states
+    )
     # Inference
 
     # label_encoder
     label_encoder = LabelEncoder()
     label_encoder.fit(alphabet)
 
-
-    state_value = encoder_model.predict(model_input)
+    states_value = encoder_model.predict(model_input)
 
     # Generate Target Sequence
     target_seq = np.zeros((1, 1, len(alphabet)))
     target_seq[0, 0, label_encoder.transform(['\t'])[0]] = 1
-    return "T"
+
+    stop_condition = False
+    decoded_sentence = ''
+    while not stop_condition:
+        output_tokens, h, c = decoder_model.predict(
+            [target_seq] + states_value)
+
+        # Sample a token
+        sampled_token_index = np.argmax(output_tokens[0, -1, :])
+        sampled_char = label_encoder.inverse_transform([sampled_token_index])[0]
+        decoded_sentence += sampled_char
+
+        # Exit condition: either hit max length
+        # or find stop character.
+        if (sampled_char == '\n' or len(decoded_sentence) > max_decoder_seq_length):
+            stop_condition = True
+
+        # Update the target sequence (of length 1).
+        target_seq = np.zeros((1, 1, len(alphabet)))
+        target_seq[0, 0, sampled_token_index] = 1.
+
+        # Update states
+        states_value = [h, c]
+
+    return decoded_sentence
 
 
 if __name__ == '__main__':
