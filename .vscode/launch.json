@@ -5,7 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: Simple Server",
+            "type": "python",
+            "request": "launch",
+            "module": "keras.simple.server" 
+        },
+        {
+            "name": "Python: Seq2Seq Server",
             "type": "python",
             "request": "launch",
             //"program": "${file}",
