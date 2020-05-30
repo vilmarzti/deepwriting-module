@@ -4,7 +4,7 @@ from flask_cors import CORS
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 
-from ..shared import shared 
+from ..shared import util 
 import numpy as np
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ alphabet.insert(0, chr(0))
 def evaluate():
     input_json = request.json
     model = load_model('./keras/simple/model/best_model_512.hdf5')
-    model_input = shared.parse_json(input_json)
+    model_input = util.parse_json(input_json)
     model_output = model.predict(model_input)
     result = process_result(model_output, alphabet)
     return result
