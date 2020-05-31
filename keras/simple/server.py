@@ -54,6 +54,6 @@ def process_result(result, alphabet):
             chars_collapsed.append(" ")
     return "".join(chars_collapsed)
 
-
-if __name__ == '__main__':
+def main():
     app.run(port=5000)
+

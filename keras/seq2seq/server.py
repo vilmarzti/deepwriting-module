@@ -97,5 +97,5 @@ def inference(model_input):
     return decoded_sentence
 
 
-if __name__ == '__main__':
+def main():
     app.run(port=5000)
