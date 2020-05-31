@@ -14,12 +14,11 @@ alphabet = list(
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.,-()/"
 )  # %:;&# '\x00' character, i.e., ord(0) to label concatenations.
 alphabet.insert(0, chr(0))
-
+model = load_model('./keras/simple/model/best_model_512.hdf5')
 
 @app.route('/', methods=['POST'])
 def evaluate():
     input_json = request.json
-    model = load_model('./keras/simple/model/best_model_512.hdf5')
     model_input = util.parse_json(input_json)
     model_output = model.predict(model_input)
     result = process_result(model_output, alphabet)
