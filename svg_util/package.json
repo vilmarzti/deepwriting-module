@@ -4,11 +4,12 @@
   "description": "This cuts svg's into small pieces so that they can be used in the deepwriting-project",
   "main": "flatten.js",
   "dependencies": {
-    "svg.js": "^2.7.1"
+    "@svgdotjs/svg.js": "^3.0.16",
+    "@types/node": "^14.11.2"
   },
   "devDependencies": {},
   "scripts": {
-    "tsc" : "tsc",
+    "tsc": "tsc",
     "flatten": "tsc && node ./build/flatten.js ~/Downloads/flo_2.svg"
   },
   "author": "",
