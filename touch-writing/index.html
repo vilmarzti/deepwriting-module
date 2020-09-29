@@ -2,15 +2,45 @@
 <head>
     <meta charset="UTF-8">
     <script src="touch.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <canvas id="canvas" width="600" height="300" style="border:solid black 1px;">
-        Your browser does not support canvas element.
-    </canvas>
-    <div id="text"></div>
-    <button onclick="clearCanvas()">Clear Canvas</button>
-    <button onclick="download()">Download</button>
-    <button onclick="send()">Evaluate</button>
+    <div id=body>
+        <div class="title">
+            Welcome to Olivia.li 
+        </div>
+        <div class="explanation">
+            This site is inspired by the <a href="https://ait.ethz.ch/projects/2018/deepwriting/">Deepwriting</a> Project. It tries to recreate and improve on the results given in the paper.
+            Checkout <a href="https://github.com/vilmarzti/deepwriting-module">the Repo</a> to see the progress of the code.
+        </div>
+        <div class="models">
+            <div class="title">
+                Models
+            </div>
+            <div class="explanation">
+                This subsections documents different models for understanding writing
+            </div>
+            <div class="model simple">
+                <div class="title">
+                    Simple Model
+                </div>
+                <div class="explanation">
+                    This model uses a bidirectional LSTM to classify each stroke into the alphabet
+                </div>
+                <div class="testing">
+                    <canvas id="canvas" width="600" height="300" style="border:solid black 1px;">
+                        Your browser does not support canvas element.
+                    </canvas>
+                    <div id="text"></div>
+                    <button onclick="clearCanvas()">Clear Canvas</button>
+                    <button onclick="send(5000)">Evaluate</button>
+                </div>
+            </div>
+            <div class="model seq2seq">
 
+            </div>
+       </div>
+    </div>
 </body>
 </html>

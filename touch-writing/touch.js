@@ -1,4 +1,4 @@
-const deepwriting_server = "http://localhost:5000"
+const deepwriting_server = "http://localhost"
 const xhr = new XMLHttpRequest();
 let canvas;
 let ctx;
@@ -114,7 +114,7 @@ function download() {
     a.click()
 }
 
-function send(){
+function send(port){
     let object = {}
     object['wholeword_segments'] = "";
     object['word_ascii'] = "";
@@ -122,7 +122,7 @@ function send(){
 
     document.getElementById('text').text = '';
 
-    xhr.open("POST", deepwriting_server, true);
+    xhr.open("POST", deepwriting_server + ':'  + port , true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.send(JSON.stringify(object));
 }
