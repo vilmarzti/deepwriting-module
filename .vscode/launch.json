@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Node flatten",
+            "program": "${workspaceFolder}/svg_util/flatten.ts",
+            "outFiles": ["${workspaceFolder}/svg_util/build/*.js"],
+            "args": ["~/Downloads/flo_2.svg"]
+        },
+        {
             "name": "Python: Simple Server",
             "type": "python",
             "request": "launch",

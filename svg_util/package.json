@@ -1,0 +1,16 @@
+{
+  "name": "svg_util",
+  "version": "1.0.0",
+  "description": "This cuts svg's into small pieces so that they can be used in the deepwriting-project",
+  "main": "flatten.js",
+  "dependencies": {
+    "svg.js": "^2.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "tsc" : "tsc",
+    "flatten": "tsc && node ./build/flatten.js ~/Downloads/flo_2.svg"
+  },
+  "author": "",
+  "license": "ISC"
+}
