@@ -5,12 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Node flatten",
             "type": "pwa-node",
             "request": "launch",
-            "name": "Node flatten",
             "program": "${workspaceFolder}/svg_util/flatten.ts",
+            "preLaunchTask": "tsc: build - svg_util/tsconfig.json",
             "outFiles": ["${workspaceFolder}/svg_util/build/*.js"],
-            "args": ["~/Downloads/flo_2.svg"]
+            "args": ["/home/martin/Downloads/flo_2.svg"]
         },
         {
             "name": "Python: Simple Server",

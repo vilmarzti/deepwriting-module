@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{	
+			"type": "typescript",
+			"tsconfig": "svg_util/tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build",
+			"label": "tsc: build - svg_util/tsconfig.json"
+		}
+	]
+}
