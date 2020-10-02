@@ -52,8 +52,9 @@ def process_result(result, alphabet):
         if len(char) == 1:
             history.append(char[0])
         if 'eoc' in char:
-            most_common = max(set(history), key=history.count)
-            chars_collapsed.append(most_common)
+            if history:
+                most_common = max(set(history), key=history.count)
+                chars_collapsed.append(most_common)
             history = []
         if 'bow' in char and idx != 0:
             chars_collapsed.append(" ")
