@@ -4,7 +4,7 @@ from flask_cors import CORS
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 
-from ..shared import util 
+from ..shared import util
 import numpy as np
 
 app = Flask(__name__)
@@ -15,6 +15,7 @@ alphabet = list(
 )  # %:;&# '\x00' character, i.e., ord(0) to label concatenations.
 alphabet.insert(0, chr(0))
 model = load_model('./keras/simple/model/best_model_512.hdf5')
+
 
 @app.route('/', methods=['POST'])
 def evaluate():
@@ -36,8 +37,13 @@ def process_result(result, alphabet):
 
     chars = char_label_encoder.inverse_transform(argmax_char)
     chars = [(c,) for c in chars]
-    chars = [chars[p] + ('eoc',) if p in eoc_positions else chars[p] for p in range(len(chars))]
     chars = [chars[p] + ('bow',) if p in bow_positions else chars[p] for p in range(len(chars))]
+    chars = [chars[p] + ('eoc',) if p in eoc_positions else chars[p] for p in range(len(chars))]
+
+    if 'bow' not in chars[0]:
+        chars[0] = chars[0] + ('bow',)
+    if 'eoc' not in chars[-1]:
+        chars[-1] = chars[-1] + ('eoc',)
 
     print(chars)
     chars_collapsed = []
@@ -53,6 +59,10 @@ def process_result(result, alphabet):
             chars_collapsed.append(" ")
     return "".join(chars_collapsed)
 
+
 def main():
     app.run(port=5000)
 
+
+if __name__ == "__main__":
+    main()

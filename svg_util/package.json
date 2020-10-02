@@ -5,12 +5,13 @@
   "main": "flatten.js",
   "dependencies": {
     "@svgdotjs/svg.js": "^3.0.16",
-    "@types/node": "^14.11.2"
+    "@types/node": "^14.11.2",
+    "svgdom": "^0.1.8"
   },
   "devDependencies": {},
   "scripts": {
     "tsc": "tsc",
-    "flatten": "tsc && node ./build/flatten.js /home/martin/Downloads/flo_2.svg"
+    "flatten": "tsc && node ./build/flatten.js /home/martin/Downloads/c.svg"
   },
   "author": "",
   "license": "ISC"

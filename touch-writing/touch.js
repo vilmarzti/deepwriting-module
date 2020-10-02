@@ -100,7 +100,7 @@ function clearCanvas() {
 
 function download() {
     let object = {};
-    object['test2'] = {};ipynb
+    object['test2'] = {};
     object['test2']['wholeword_segments'] = "";
     object['test2']['word_ascii'] = "";
     object['test2']['word_stroke'] = touchhistory;
