@@ -2,6 +2,14 @@ import * as fs from 'fs';
 import {request } from 'http';
 import { RequestOptions } from 'https';
 
+const { createSVGWindow } = require('svgdom')
+const window = createSVGWindow()
+const document = window.document
+
+const { SVG, registerWindow } = require('@svgdotjs/svg.js')
+// register window and document
+registerWindow(window, document)
+
 
 // Interface for sending an object 
 interface TextObject{
@@ -17,14 +25,6 @@ interface WordStroke {
     ev: number;
     ts: any;
 }
-
-const { createSVGWindow } = require('svgdom')
-const window = createSVGWindow()
-const document = window.document
-const { SVG, registerWindow } = require('@svgdotjs/svg.js')
-// register window and document
-registerWindow(window, document)
-
 
 // step through paths and cut them into <num_step> pieces
 let num_cuts = 50;

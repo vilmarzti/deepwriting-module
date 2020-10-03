@@ -8,3 +8,4 @@ runs_evaluation
 __pycache__
 node_modules
 build/
+data/

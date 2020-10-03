@@ -29,6 +29,7 @@ def evaluate():
 def process_result(result, alphabet):
     bow_positions = np.where(result[2] > 0.8)[1]
     eoc_positions = np.where(result[1] > 0.8)[1]
+
     char_prediction = result[0][0]
     argmax_char = np.argmax(char_prediction, 1)
 
@@ -45,7 +46,6 @@ def process_result(result, alphabet):
     if 'eoc' not in chars[-1]:
         chars[-1] = chars[-1] + ('eoc',)
 
-    print(chars)
     chars_collapsed = []
     history = []
     for idx, char in enumerate(chars):
@@ -58,6 +58,10 @@ def process_result(result, alphabet):
             history = []
         if 'bow' in char and idx != 0:
             chars_collapsed.append(" ")
+
+    if "".join(chars_collapsed) == "":
+        print(chars)
+
     return "".join(chars_collapsed)
 
 
