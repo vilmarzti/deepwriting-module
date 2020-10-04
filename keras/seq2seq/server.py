@@ -36,29 +36,31 @@ def evaluate():
     return result
 
 
+# Encoder Model
+encoder_model = Model(model.get_layer('encoder_input').output, [model.get_layer('merge_h').output, model.get_layer('merge_c').output])
+
+# Decoder Model
+decoder_state_input_h = Input(decoder_space, )
+decoder_state_input_c = Input(decoder_space, )
+
+decoder_state_inputs = [decoder_state_input_h, decoder_state_input_c]
+
+decoder_outputs, decoder_state_h, decoder_state_c = model.get_layer('decoder')(
+    model.get_layer('masking_decoder').output,
+    initial_state=decoder_state_inputs
+)
+
+decoder_states = [decoder_state_h, decoder_state_h]
+decoder_outputs = model.get_layer('dense_decoder')(decoder_outputs)
+
+decoder_model = Model(
+    [model.get_layer('decoder_input').output] + decoder_state_inputs,
+    [decoder_outputs] + decoder_states
+)
+
 # check out https://keras.io/examples/lstm_seq2seq/
 def inference(model_input):
-    # Encoder Model
-    encoder_model = Model(model.get_layer('encoder_input').output, [model.get_layer('merge_h').output, model.get_layer('merge_c').output])
 
-    # Decoder Model
-    decoder_state_input_h = Input(decoder_space, )
-    decoder_state_input_c = Input(decoder_space, )
-
-    decoder_state_inputs = [decoder_state_input_h, decoder_state_input_c]
-
-    decoder_outputs, decoder_state_h, decoder_state_c = model.get_layer('decoder')(
-        model.get_layer('decoder_input').output,
-        initial_state=decoder_state_inputs
-    )
-
-    decoder_states = [decoder_state_h, decoder_state_h]
-    decoder_outputs = model.get_layer('dense_decoder')(decoder_outputs)
-
-    decoder_model = Model(
-        [model.get_layer('decoder_input').output] + decoder_state_inputs,
-        [decoder_outputs] + decoder_states
-    )
     # Inference
 
     # label_encoder
