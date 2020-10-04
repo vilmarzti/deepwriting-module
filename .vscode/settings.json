@@ -1,4 +1,5 @@
 {
+    "python.venvPath": "/home/martin/.cache/pypoetry/virtualenvs/deepwriting-module-QpDglBdo-py3.8",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,

@@ -26,6 +26,12 @@
             //"program": "${file}",
             "module": "keras.seq2seq.server",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Deewpriting Server",
+            "type": "python",
+            "request": "launch",
+            "program": "deepwriting/server.py"
         }
     ]
 }

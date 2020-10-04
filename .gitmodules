@@ -1,0 +1,3 @@
+[submodule "deepwriting"]
+	path = deepwriting
+	url = git@github.com:vilmarzti/deepwriting.git
