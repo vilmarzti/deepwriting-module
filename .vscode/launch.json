@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/svg_util/flatten.ts",
             "preLaunchTask": "tsc: build - svg_util/tsconfig.json",
             "outFiles": ["${workspaceFolder}/svg_util/build/*.js"],
-            "args": ["/home/martin/Downloads/flo_2.svg"]
+            "args": ["data/abc_svg/a.svg"]
         },
         {
             "name": "Python: Simple Server",

@@ -42,7 +42,7 @@ function cut_path_num_cuts(paths: any): any[][]{
 }
 
 // step through paths and cut them at even intervals
-let step_distance = 5;
+let step_distance = 3;
 function cut_path_steps(paths: any): any[][]{
     let cut_paths = []
     for( let path of paths){
@@ -58,29 +58,32 @@ function cut_path_steps(paths: any): any[][]{
     return cut_paths;
 }
 
+// find all permutations of an array
+function perm(xs: any[]) {
+  let ret = [];
 
+  for (let i = 0; i < xs.length; i = i + 1) {
+    let rest: any = perm(xs.slice(0, i).concat(xs.slice(i + 1)));
 
-// Read file if an arguments is given
-if (process.argv.length === 3){
-    let file_path = process.argv[2];
+    if(!rest.length) {
+      ret.push([xs[i]])
+    } else {
+      for(let j = 0; j < rest.length; j = j + 1) {
+        ret.push([xs[i]].concat(rest[j]))
+      }
+    }
+  }
+  return ret;
+}
 
-    // read file
-    let svg_text = fs.readFileSync(file_path, {encoding: 'utf-8'});
-
-    // read SVG
-    let draw = SVG(document.documentElement);
-    let store = draw.svg(svg_text);
-
-    //let cut_paths: any[][] = cut_path_num_cuts(store.find("path"));
-    let cut_paths: any[][] = cut_path_steps(store.find("path"));
-
+function compose_data_format(paths: any[]){
     // compose correct data format
     let text_object: TextObject = {
         wholeword_segments: "",
         word_ascii: "",
         word_stroke: []
     }
-    for(let path of cut_paths){
+    for(let path of paths){
         for( let [index, point] of path.entries()){
             let type: string = "move";
             let ev: number = 0;
@@ -106,7 +109,10 @@ if (process.argv.length === 3){
         }
     }
 
-    // send to server for analysis
+    return text_object;
+}
+
+function send_to_server(text_object: TextObject, interpretations: string[]){
     let options: RequestOptions = {
         hostname: "127.0.0.1",
         port: 5000,
@@ -114,7 +120,8 @@ if (process.argv.length === 3){
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8'
-        }
+        },
+
     };
 
     let body_chunks: Uint8Array[] = [];
@@ -126,7 +133,8 @@ if (process.argv.length === 3){
            });
            res.on('end', () =>{
                let body = Buffer.concat(body_chunks).toString();
-               console.log(body);
+               interpretations.push(body);
+               console.log(" " + body);
            })
        }
     )
@@ -137,4 +145,36 @@ if (process.argv.length === 3){
 
     req.write(JSON.stringify(text_object));
     req.end();
+
+}
+
+
+// Read file if an arguments is given
+if (process.argv.length === 3){
+    let file_path = process.argv[2];
+
+    // read file
+    let svg_text = fs.readFileSync(file_path, {encoding: 'utf-8'});
+
+    // read SVG
+    let draw = SVG(document.documentElement);
+    let store = draw.svg(svg_text);
+
+    //let cut_paths: any[][] = cut_path_num_cuts(store.find("path"));
+    let cut_paths: any[][] = cut_path_steps(store.find("path"));
+
+    // find all permutations
+    let perms = perm(cut_paths);
+
+    //let text_object = compose_data_format(cut_paths);
+
+    // send to server for analysis
+    //send_to_server(text_object);
+
+    console.log(perms.length)
+    for(let path of perms){
+        let interpretations: string[]= []
+        let text_object = compose_data_format(path);
+        send_to_server(text_object, interpretations);
+    }
 }

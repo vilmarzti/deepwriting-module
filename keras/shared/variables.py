@@ -1,1 +1,1 @@
-WORKSPACEFOLDER = "/home/martin/Documents/code/python3/deepwriting-module"
+WORKSPACEFOLDER = "/home/martin/Documents/code/deepwriting-module"
