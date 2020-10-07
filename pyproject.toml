@@ -73,7 +73,7 @@ tensorflow = "2.3.0"
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
-server-simple="keras.simple.server:main"
+server-baseline="keras.baseline.server:main"
 server-seq2seq="keras.seq2seq.server:main"
 server-deepwriting="deepwriting.server.py:main"
 

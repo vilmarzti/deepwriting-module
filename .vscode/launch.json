@@ -14,10 +14,10 @@
             "args": ["data/abc_svg/a.svg"]
         },
         {
-            "name": "Python: Simple Server",
+            "name": "Python: Baseline Server",
             "type": "python",
             "request": "launch",
-            "module": "keras.simple.server" 
+            "module": "keras.baseline.server" 
         },
         {
             "name": "Python: Seq2Seq Server",
