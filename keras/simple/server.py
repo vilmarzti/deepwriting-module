@@ -36,7 +36,10 @@ def process_result(result, alphabet):
     char_label_encoder.fit(alphabet)
 
     chars = char_label_encoder.inverse_transform(argmax_char)
+    char_probs = [(char_prediction[index, value],) for index, value in enumerate(argmax_char)]
+
     chars = [(c,) for c in chars]
+    chars = [chars[i] + char_probs[i] for i in range(len(chars))]
     chars = [chars[p] + ('bow',) if p in bow_positions else chars[p] for p in range(len(chars))]
     chars = [chars[p] + ('eoc',) if p in eoc_positions else chars[p] for p in range(len(chars))]
 
@@ -49,15 +52,24 @@ def process_result(result, alphabet):
     chars_collapsed = []
     history = []
     for idx, char in enumerate(chars):
-        if len(char) == 1:
-            history.append(char[0])
         if 'eoc' in char:
             if history:
-                most_common = max(set(history), key=history.count)
+                # Find most probable character based on their probability
+                probability_dict = {}
+                for h in history:
+                    if h[0] in probability_dict:
+                        probability_dict[h[0]] + h[1]
+                    else:
+                        probability_dict[h[0]] = h[1]
+
+                #most_common = max(set(history), key=history.count)
+                most_common = max(probability_dict, key=probability_dict.get)
                 chars_collapsed.append(most_common)
             history = []
-        if 'bow' in char and idx != 0:
+        elif 'bow' in char and idx != 0:
             chars_collapsed.append(" ")
+        else:
+            history.append(char)
     return "".join(chars_collapsed)
 
 
