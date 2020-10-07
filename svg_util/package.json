@@ -11,7 +11,7 @@
   "devDependencies": {},
   "scripts": {
     "tsc": "tsc",
-    "flatten": "tsc && node ./build/flatten.js /home/martin/Downloads/c.svg"
+    "flatten": "tsc && node ./build/flatten.js ../data/gesten_svg/flo_2.svg"
   },
   "author": "",
   "license": "ISC"

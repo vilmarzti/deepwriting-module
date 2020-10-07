@@ -11,13 +11,13 @@
             "program": "${workspaceFolder}/svg_util/flatten.ts",
             "preLaunchTask": "tsc: build - svg_util/tsconfig.json",
             "outFiles": ["${workspaceFolder}/svg_util/build/*.js"],
-            "args": ["/home/martin/Downloads/flo_2.svg"]
+            "args": ["data/abc_svg/a.svg"]
         },
         {
-            "name": "Python: Simple Server",
+            "name": "Python: Baseline Server",
             "type": "python",
             "request": "launch",
-            "module": "keras.simple.server" 
+            "module": "keras.baseline.server" 
         },
         {
             "name": "Python: Seq2Seq Server",
@@ -26,6 +26,12 @@
             //"program": "${file}",
             "module": "keras.seq2seq.server",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Deewpriting Server",
+            "type": "python",
+            "request": "launch",
+            "program": "deepwriting/server.py"
         }
     ]
 }
