@@ -27,7 +27,7 @@ To start a server use
 `poetry run server-simple`
 `poetry run server-seq2seq`
 
-#### Simple
+#### Baseline
 This model tries to classify every stroke to a letter. The classified strokes are then merged into a simple letter based on the bow (beginning of word) and eoc (end of character) labels. These labels are also made by the simple model
 
 #### Seq2Seq
