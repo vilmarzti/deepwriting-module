@@ -166,12 +166,7 @@ if (process.argv.length === 3){
     // find all permutations
     let perms = perm(cut_paths);
 
-    //let text_object = compose_data_format(cut_paths);
-
     // send to server for analysis
-    //send_to_server(text_object);
-
-    console.log(perms.length)
     for(let path of perms){
         let interpretations: string[]= []
         let text_object = compose_data_format(path);
