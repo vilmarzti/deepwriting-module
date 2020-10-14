@@ -46,3 +46,6 @@ See on (keras)[#keras] how to start a server
 ## Errors
 ### Poetry could not install tensorflow 2.1.0
 Run this command and everything should be set `poetry run pip install -U pip`
+
+### Poetry could not install scikit-learn
+There is a hidden dependency to cython. Open a shell with `poetry shell` and run `pip install cython`

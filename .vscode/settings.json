@@ -8,5 +8,6 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true
-    }
+    },
+    "python.pythonPath": "/home/martin/.cache/pypoetry/virtualenvs/deepwriting-module-QpDglBdo-py3.8/bin/python3"
 }
