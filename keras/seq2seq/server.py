@@ -100,7 +100,7 @@ def inference(model_input):
 
 
 def main():
-    app.run(port=5000)
+    app.run(port=6000)
 
 
 if __name__ == "__main__":

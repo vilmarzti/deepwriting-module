@@ -1,10 +1,11 @@
 import numpy as np
 
+
 def parse_json(input_json):
     strokes = input_json['word_stroke']
-    model_input = []
 
     # read strokes
+    model_input = []
     for stroke in strokes:
         elem = [stroke['x'], stroke['y'], stroke['ev']]
         model_input.append(elem)

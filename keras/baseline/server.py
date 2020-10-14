@@ -20,10 +20,14 @@ model = load_model('./keras/baseline/model/best_model_512.hdf5')
 @app.route('/', methods=['POST'])
 def evaluate():
     input_json = request.json
-    model_input = util.parse_json(input_json)
-    model_output = model.predict(model_input)
-    result = process_result(model_output, alphabet)
-    return {'result': result}
+    if len(input_json['word_stroke']) != 0:
+        model_input = util.parse_json(input_json)
+        model_output = model.predict(model_input)
+        result = process_result(model_output, alphabet)
+        return {'result': result}
+    else:
+        return {'result': ''}
+
 
 
 def process_result(result, alphabet):
