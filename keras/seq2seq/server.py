@@ -11,15 +11,10 @@ from ..shared import util, variables
 from os import path
 import numpy as np
 
-
-app = Flask(__name__)
-cors = CORS(app)
-
 alphabet = list("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.,;:!?-+*()[]&/ \"#")  # %:;&#
 alphabet.insert(0, chr(0))  # '\x00' character, i.e., ord(0) to label concatenate
 alphabet.insert(1, '\t')  # start of sequence
 alphabet.insert(2, '\n')  # end of sequence
-
 
 max_decoder_seq_length = 100
 
@@ -27,14 +22,6 @@ encoder_space = 512
 decoder_space = encoder_space * 2
 
 model = load_model(path.join(variables.WORKSPACEFOLDER, 'keras/seq2seq/model/best_model_seq2seq_512.hdf5'))
-
-
-@app.route('/', methods=['POST'])
-def evaluate():
-    input_json = request.json
-    model_input = util.parse_json(input_json)
-    result = inference(model_input)
-    return result
 
 
 # Encoder Model
@@ -100,8 +87,18 @@ def inference(model_input):
     return decoded_sentence
 
 
+app = Flask(__name__)
+cors = CORS(app)
+@app.route('/', methods=['POST'])
+def evaluate():
+    input_json = request.json
+    model_input = util.parse_json(input_json)
+    result = inference(model_input)
+    return {"result": result}
+
+
 def main():
-    serve(app, host='0.0.0.0', port=6000)
+    serve(app, host='0.0.0.0', port=5001)
 
 
 if __name__ == "__main__":
