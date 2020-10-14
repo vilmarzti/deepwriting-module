@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+from waitress import serve
 
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
@@ -27,7 +28,6 @@ def evaluate():
         return {'result': result}
     else:
         return {'result': ''}
-
 
 
 def process_result(result, alphabet):
@@ -78,7 +78,7 @@ def process_result(result, alphabet):
 
 
 def main():
-    app.run(port=5000)
+    serve(app, host='0.0.0.0', port=5000)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask_cors import CORS
+from waitress import serve
 
-from tensorflow.keras.layers import LSTM, Input, Dense, TimeDistributed, Masking, Bidirectional, Concatenate
+from tensorflow.keras.layers import Input
 from tensorflow.keras.models import load_model, Model
 
 from sklearn.preprocessing import LabelEncoder
@@ -58,9 +59,9 @@ decoder_model = Model(
     [decoder_outputs] + decoder_states
 )
 
+
 # check out https://keras.io/examples/lstm_seq2seq/
 def inference(model_input):
-
     # Inference
 
     # label_encoder
@@ -100,7 +101,7 @@ def inference(model_input):
 
 
 def main():
-    app.run(port=6000)
+    serve(app, host='0.0.0.0', port=6000)
 
 
 if __name__ == "__main__":
