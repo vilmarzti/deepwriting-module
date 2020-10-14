@@ -23,7 +23,7 @@ def evaluate():
     model_input = util.parse_json(input_json)
     model_output = model.predict(model_input)
     result = process_result(model_output, alphabet)
-    return result
+    return {'result': result}
 
 
 def process_result(result, alphabet):
