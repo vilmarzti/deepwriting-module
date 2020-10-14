@@ -21,7 +21,7 @@ max_decoder_seq_length = 100
 encoder_space = 512
 decoder_space = encoder_space * 2
 
-model = load_model(path.join(variables.WORKSPACEFOLDER, 'keras/seq2seq/model/best_model_seq2seq_512.hdf5'))
+model = load_model('./keras/seq2seq/model/best_model_seq2seq_512.hdf5')
 
 
 # Encoder Model
