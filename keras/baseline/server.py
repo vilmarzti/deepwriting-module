@@ -62,7 +62,7 @@ def process_result(result, alphabet):
                 probability_dict = {}
                 for h in history:
                     if h[0] in probability_dict:
-                        probability_dict[h[0]] + h[1]
+                        probability_dict[h[0]] += h[1]
                     else:
                         probability_dict[h[0]] = h[1]
 
