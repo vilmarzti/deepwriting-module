@@ -5,26 +5,41 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Deepwriting Evaluate",
+            "type": "python",
+            "request": "launch",
+            "module": "deepwriting.tf_evaluate_hw",
+            "args": [
+                "-S=./data/synthesis-model",
+                "-QL"
+
+            ]
+        },
+        {
             "name": "Node flatten",
             "type": "pwa-node",
             "request": "launch",
             "program": "${workspaceFolder}/svg_util/flatten.ts",
             "preLaunchTask": "tsc: build - svg_util/tsconfig.json",
-            "outFiles": ["${workspaceFolder}/svg_util/build/*.js"],
-            "args": ["data/abc_svg/a.svg"]
+            "outFiles": [
+                "${workspaceFolder}/svg_util/build/*.js"
+            ],
+            "args": [
+                "data/abc_svg/a.svg"
+            ]
         },
         {
             "name": "Python: Baseline Server",
             "type": "python",
             "request": "launch",
-            "module": "keras.baseline.server" 
+            "module": "deepreading.baseline.server"
         },
         {
             "name": "Python: Seq2Seq Server",
             "type": "python",
             "request": "launch",
             //"program": "${file}",
-            "module": "keras.seq2seq.server",
+            "module": "deepreading.seq2seq.server",
             "console": "integratedTerminal"
         },
         {

@@ -31,8 +31,8 @@ def evaluate():
 
 
 def process_result(result, alphabet):
-    bow_positions = np.where(result[2] > 0.8)[1]
-    eoc_positions = np.where(result[1] > 0.8)[1]
+    bow_positions = np.where(result[2] > 0.9)[1]
+    eoc_positions = np.where(result[1] > 0.9)[1]
 
     char_prediction = result[0][0]
     argmax_char = np.argmax(char_prediction, 1)

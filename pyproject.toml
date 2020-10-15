@@ -74,9 +74,8 @@ waitress = "^1.4.4"
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
-server-baseline="keras.baseline.server:main"
-server-seq2seq="keras.seq2seq.server:main"
-server-deepwriting="deepwriting.server.py:main"
+server-baseline="deepreading.baseline.server:main"
+server-seq2seq="deepreading.seq2seq.server:main"
 
 [build-system]
 requires = ["poetry>=0.12"]
