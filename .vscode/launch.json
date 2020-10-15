@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Deepwriting Train Classification",
+            "type": "python",
+            "request": "launch",
+            "module": "deepwriting.tf_train_hw_classification",
+            "args":[
+                "-S=./data/deepreading-model"
+            ]
+        },
+        {
             "name": "Python: Deepwriting Evaluate",
             "type": "python",
             "request": "launch",
@@ -12,7 +21,6 @@
             "args": [
                 "-S=./data/synthesis-model",
                 "-QL"
-
             ]
         },
         {
