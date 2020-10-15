@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "This module tests and plays around with the ideas presented by the deepwriting project from ETHZ"
 authors = ["Martin Villavicencio <villavicencio.martin@protonmail.com>"]
 packages = [
-    {include="keras", from="."}
+    {include="deepreading", from="."}
 ]
 
 [tool.poetry.dependencies]
