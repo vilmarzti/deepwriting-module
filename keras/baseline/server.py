@@ -5,7 +5,7 @@ from waitress import serve
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 
-from ..shared import util
+from ..shared import util, variables
 import numpy as np
 
 app = Flask(__name__)
@@ -78,7 +78,7 @@ def process_result(result, alphabet):
 
 
 def main():
-    serve(app, host='0.0.0.0', port=5000)
+    serve(app, host='0.0.0.0', port=variables.BASELINE_PORT)
 
 
 if __name__ == "__main__":

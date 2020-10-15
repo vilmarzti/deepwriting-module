@@ -1,1 +1,2 @@
-WORKSPACEFOLDER = "/home/martin/Documents/code/deepwriting-module"
+BASELINE_PORT = 8001
+SEQ2SEQ_PORT = 8002
