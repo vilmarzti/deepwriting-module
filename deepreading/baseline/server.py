@@ -15,7 +15,7 @@ alphabet = list(
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.,-()/"
 )  # %:;&# '\x00' character, i.e., ord(0) to label concatenations.
 alphabet.insert(0, chr(0))
-model = load_model('./deepreading/baseline/model/best_model_512.hdf5')
+model = load_model('./deepreading/baseline/model/baseline_model.hdf5')
 
 
 @app.route('/', methods=['POST'])

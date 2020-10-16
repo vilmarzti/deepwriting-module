@@ -70,6 +70,7 @@ urllib3 = "==1.25.8"
 Werkzeug = "==1.0.0"
 tensorflow = "2.3.0"
 waitress = "^1.4.4"
+ipykernel = "^5.3.4"
 
 [tool.poetry.dev-dependencies]
 
