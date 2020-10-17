@@ -5,11 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Baseline-stacked.server",
+            "type": "python",
+            "request": "launch",
+            "module": "deepreading.baseline-stacked.server"
+        },
+        {
             "name": "Python: Deepwriting Train Classification",
             "type": "python",
             "request": "launch",
             "module": "deepwriting.tf_train_hw_classification",
-            "args":[
+            "args": [
                 "-S=./data/deepreading-model"
             ]
         },
