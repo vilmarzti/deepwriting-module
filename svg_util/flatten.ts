@@ -5,6 +5,7 @@ import { RequestOptions } from 'https';
 const { createSVGWindow } = require('svgdom')
 const window = createSVGWindow()
 const document = window.document
+const port = 8001
 
 const { SVG, registerWindow } = require('@svgdotjs/svg.js')
 // register window and document
@@ -115,7 +116,7 @@ function compose_data_format(paths: any[]){
 function send_to_server(text_object: TextObject, interpretations: string[]){
     let options: RequestOptions = {
         hostname: "127.0.0.1",
-        port: 5000,
+        port: port,
         path: "/",
         method: "POST",
         headers: {
@@ -134,7 +135,7 @@ function send_to_server(text_object: TextObject, interpretations: string[]){
            res.on('end', () =>{
                let body = Buffer.concat(body_chunks).toString();
                interpretations.push(body);
-               console.log(" " + body);
+               console.log(" " + JSON.parse(body).result);
            })
        }
     )
