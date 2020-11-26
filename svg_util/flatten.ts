@@ -146,7 +146,6 @@ function send_to_server(text_object: TextObject, interpretations: string[]){
 
     req.write(JSON.stringify(text_object));
     req.end();
-
 }
 
 
