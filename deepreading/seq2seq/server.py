@@ -98,7 +98,7 @@ def evaluate():
 
 
 def main():
-    serve(app, host='0.0.0.0', port=variables.SEQ2SEQ_PORT)
+    serve(app, host='0.0.0.0', port=variables.SEQ2SEQ_PORT, threads=100)
 
 
 if __name__ == "__main__":
