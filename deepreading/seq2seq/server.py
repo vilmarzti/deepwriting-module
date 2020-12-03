@@ -63,6 +63,7 @@ def inference(model_input):
 
     stop_condition = False
     decoded_sentence = ''
+    num_decoded_chars = 0
     while not stop_condition:
         output_tokens, h, c = decoder_model.predict(
             [target_seq] + states_value)
@@ -74,7 +75,7 @@ def inference(model_input):
 
         # Exit condition: either hit max length
         # or find stop character.
-        if (sampled_char == '\n' or len(decoded_sentence) > max_decoder_seq_length):
+        if (sampled_char == '\n' or num_decoded_chars > max_decoder_seq_length):
             stop_condition = True
 
         # Update the target sequence (of length 1).
@@ -83,6 +84,7 @@ def inference(model_input):
 
         # Update states
         states_value = [h, c]
+        num_decoded_chars += 1
 
     return decoded_sentence
 
