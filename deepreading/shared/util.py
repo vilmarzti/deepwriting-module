@@ -1,9 +1,26 @@
 import numpy as np
+import heapq
 from sklearn.preprocessing import LabelEncoder
-import numpy as np
+
+
+class HeapHelper(object):
+    """
+        Helper Class for heapq
+    """
+    def __init__(self, indices=[], value=0):
+        self.indices = indices
+        self.value = value
+    
+    def __lt__(self, other):
+        return self.value < self.value
+   
 
 def parse_json(input_json):
     strokes = input_json['word_stroke']
+    try:
+        num_interpretations = input_json['num_interpretations']
+    except KeyError:
+        num_interpretations = 1
 
     # read strokes
     model_input = []
@@ -19,7 +36,7 @@ def parse_json(input_json):
 
     # Add new dimension for batch_size
     model_input = np.expand_dims(model_input, axis=0)
-    return model_input
+    return model_input, num_interpretations
 
 
 def calculate_diff(model_input):
@@ -51,10 +68,10 @@ def standartize_vector(model_input):
     mean[2] = 0.0
     std[2] = 1.0
     model_input = (model_input - mean) / std
-    return model_input 
+    return model_input
 
 
-def process_result(result, alphabet):
+def process_result(result, alphabet, num_interpretations):
     eow_positions = np.where(result[2] > 0.8)[1]
     eoc_positions = np.where(result[1] > 0.8)[1]
 
@@ -78,8 +95,10 @@ def process_result(result, alphabet):
     if 'eow' not in chars[-1]:
         chars[-1] = chars[-1] + ('eow',)
 
+    # find probabilities of possible chars
     chars_collapsed = []
     history = []
+    chars_probabilities = []
     for idx, char in enumerate(chars):
         if 'eoc' not in char and 'eow' not in char:
             history.append(char)
@@ -96,11 +115,54 @@ def process_result(result, alphabet):
 
                 #most_common = max(set(history), key=history.count)
                 most_common = max(probability_dict, key=probability_dict.get)
+                chars_probabilities.append(probability_dict)
                 chars_collapsed.append(most_common)
             history = []
         
         if 'eow' in char:
             chars_collapsed.append(" ")
+            chars_probabilities.append({" ": 1.0})
+    
+    # normalize probability dicts
+    for d in chars_probabilities:
+        prob_sum = sum([d[key] for key in d.keys()])
+        for key in d.keys():
+            d[key] = d[key]/prob_sum
+
+    # convert dict into a list (per chacterposition) of list (possible chacter choices) of tuples
+    chars_probabilities = [[(key, d[key]) for key in d]for d in chars_probabilities]
+
+    # Sort list of possible character choices descendently
+    [l.sort(key=lambda x: x[1], reverse=True) for l in chars_probabilities]
+    
+    # Find k most probable interpretations
+    heap_list = []
+    used_indices = []
+    k_largest_sum = []
+
+    # use min heap to get the k largest sums 
+    heap_helper = HeapHelper([0 for _ in chars_probabilities])
+    heap_helper.value = -sum(chars_probabilities[i1][i2][1] for i1, i2 in enumerate(heap_helper.indices))
+    heapq.heappush(heap_list, heap_helper)
+    for i in range(num_interpretations):
+        elem = heapq.heappop(heap_list)
+        k_largest_sum.append(elem)
+
+        for n in range(len(chars_probabilities)):
+            indices = elem.indices.copy()
+            # if there are no more elements don't increase by one
+            if indices[n] >= len(chars_probabilities[n]) - 1:
+                continue
+            else:
+                indices[n] += 1
+            
+            # check if the index combination is already in the heap
+            h = hash(str(indices))
+            if h not in used_indices:
+                value = -sum([chars_probabilities[char_pos][char_index][1] for char_pos, char_index in enumerate(indices)])
+                new_elem = HeapHelper(indices, value)
+                heapq.heappush(heap_list, new_elem)
+                used_indices.append(h)
 
     return "".join(chars_collapsed)
 

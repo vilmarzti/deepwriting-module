@@ -94,7 +94,7 @@ cors = CORS(app)
 @app.route('/', methods=['POST'])
 def evaluate():
     input_json = request.json
-    model_input = util.parse_json(input_json)
+    model_input, _ = util.parse_json(input_json)
     result = inference(model_input)
     return {"result": result}
 

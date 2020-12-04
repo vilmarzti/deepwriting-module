@@ -22,9 +22,9 @@ model = load_model('./deepreading/baseline/model/baseline_model.hdf5')
 def evaluate():
     input_json = request.json
     if len(input_json['word_stroke']) != 0:
-        model_input = util.parse_json(input_json)
+        model_input, num_interpretations = util.parse_json(input_json)
         model_output = model.predict(model_input)
-        result = util.process_result(model_output, alphabet)
+        result = util.process_result(model_output, alphabet, num_interpretations)
         return {'result': result}
     else:
         return {'result': ''}
