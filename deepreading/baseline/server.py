@@ -3,10 +3,8 @@ from flask_cors import CORS
 from waitress import serve
 
 from tensorflow.keras.models import load_model
-from sklearn.preprocessing import LabelEncoder
 
 from ..shared import util, variables
-import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -25,9 +23,9 @@ def evaluate():
         model_input, num_interpretations = util.parse_json(input_json)
         model_output = model.predict(model_input)
         result = util.process_result(model_output, alphabet, num_interpretations)
-        return {'result': result}
+        return result
     else:
-        return {'result': ''}
+        return {}
 
 
 def main():

@@ -10,10 +10,10 @@ class HeapHelper(object):
     def __init__(self, indices=[], value=0):
         self.indices = indices
         self.value = value
-    
+
     def __lt__(self, other):
         return self.value < self.value
-   
+
 
 def parse_json(input_json):
     strokes = input_json['word_stroke']
@@ -29,8 +29,8 @@ def parse_json(input_json):
         model_input.append(elem)
 
     model_input = np.array(model_input)
-    #model_input = scale_to_zero_one(model_input)
-    #model_input = translate_to_origin(model_input)
+    # model_input = scale_to_zero_one(model_input)
+    # model_input = translate_to_origin(model_input)
     model_input = calculate_diff(model_input)
     model_input = standartize_vector(model_input)
 
@@ -113,34 +113,34 @@ def process_result(result, alphabet, num_interpretations):
                     else:
                         probability_dict[h[0]] = h[1]
 
-                #most_common = max(set(history), key=history.count)
+                # most_common = max(set(history), key=history.count)
                 most_common = max(probability_dict, key=probability_dict.get)
                 chars_probabilities.append(probability_dict)
                 chars_collapsed.append(most_common)
             history = []
-        
+
         if 'eow' in char:
             chars_collapsed.append(" ")
             chars_probabilities.append({" ": 1.0})
-    
+
     # normalize probability dicts
     for d in chars_probabilities:
         prob_sum = sum([d[key] for key in d.keys()])
         for key in d.keys():
-            d[key] = d[key]/prob_sum
+            d[key] = d[key] / prob_sum
 
     # convert dict into a list (per chacterposition) of list (possible chacter choices) of tuples
     chars_probabilities = [[(key, d[key]) for key in d]for d in chars_probabilities]
 
     # Sort list of possible character choices descendently
     [l.sort(key=lambda x: x[1], reverse=True) for l in chars_probabilities]
-    
+
     # Find k most probable interpretations
     heap_list = []
     used_indices = []
     k_largest_sum = []
 
-    # use min heap to get the k largest sums 
+    # use min heap to get the k largest sums
     heap_helper = HeapHelper([0 for _ in chars_probabilities])
     heap_helper.value = -sum(chars_probabilities[i1][i2][1] for i1, i2 in enumerate(heap_helper.indices))
     heapq.heappush(heap_list, heap_helper)
@@ -155,7 +155,7 @@ def process_result(result, alphabet, num_interpretations):
                 continue
             else:
                 indices[n] += 1
-            
+
             # check if the index combination is already in the heap
             h = hash(str(indices))
             if h not in used_indices:
@@ -164,5 +164,12 @@ def process_result(result, alphabet, num_interpretations):
                 heapq.heappush(heap_list, new_elem)
                 used_indices.append(h)
 
-    return "".join(chars_collapsed)
+    result_dict = {}
+    for elem in k_largest_sum:
+        result = ""
+        prob = -(elem.value / len(chars_probabilities))
+        for i1, i2 in enumerate(elem.indices):
+            result += chars_probabilities[i1][i2][0]
+        result_dict[str.rstrip(result)] = prob
 
+    return result_dict

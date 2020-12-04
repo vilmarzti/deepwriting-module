@@ -8,7 +8,6 @@ from tensorflow.keras.models import load_model, Model
 from sklearn.preprocessing import LabelEncoder
 
 from ..shared import util, variables
-from os import path
 import numpy as np
 
 alphabet = list("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.,;:!?-+*()[]&/ \"#")  # %:;&#
