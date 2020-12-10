@@ -3,18 +3,6 @@ import heapq
 from sklearn.preprocessing import LabelEncoder
 
 
-class HeapHelper(object):
-    """
-        Helper Class for heapq
-    """
-    def __init__(self, indices=[], value=0):
-        self.indices = indices
-        self.value = value
-
-    def __lt__(self, other):
-        return self.value < self.value
-
-
 def parse_json(input_json):
     strokes = input_json['word_stroke']
     try:
@@ -141,15 +129,20 @@ def process_result(result, alphabet, num_interpretations):
     k_largest_sum = []
 
     # use min heap to get the k largest sums
-    heap_helper = HeapHelper([0 for _ in chars_probabilities])
-    heap_helper.value = -sum(chars_probabilities[i1][i2][1] for i1, i2 in enumerate(heap_helper.indices))
-    heapq.heappush(heap_list, heap_helper)
+    negative_sum = -sum(chars_probabilities[i1][i2][1] for i1, i2 in enumerate([0] * len(chars_probabilities)))
+    heap_tup = (negative_sum, [0] * len(chars_probabilities))
+    heapq.heappush(heap_list, heap_tup)
     for i in range(num_interpretations):
-        elem = heapq.heappop(heap_list)
+        # check if there is still an element in the heap_list
+        if len(heap_list) == 0:
+            break
+        else:
+            elem = heapq.heappop(heap_list)
+
         k_largest_sum.append(elem)
 
         for n in range(len(chars_probabilities)):
-            indices = elem.indices.copy()
+            indices = elem[1].copy()
             # if there are no more elements don't increase by one
             if indices[n] >= len(chars_probabilities[n]) - 1:
                 continue
@@ -159,16 +152,15 @@ def process_result(result, alphabet, num_interpretations):
             # check if the index combination is already in the heap
             h = hash(str(indices))
             if h not in used_indices:
-                value = -sum([chars_probabilities[char_pos][char_index][1] for char_pos, char_index in enumerate(indices)])
-                new_elem = HeapHelper(indices, value)
-                heapq.heappush(heap_list, new_elem)
+                negative_sum = -sum([chars_probabilities[char_pos][char_index][1] for char_pos, char_index in enumerate(indices)])
+                heapq.heappush(heap_list, (negative_sum, indices))
                 used_indices.append(h)
 
     result_dict = {}
     for elem in k_largest_sum:
         result = ""
-        prob = -(elem.value / len(chars_probabilities))
-        for i1, i2 in enumerate(elem.indices):
+        prob = -(elem[0] / len(chars_probabilities))
+        for i1, i2 in enumerate(elem[1]):
             result += chars_probabilities[i1][i2][0]
         result_dict[str.rstrip(result)] = prob
 
