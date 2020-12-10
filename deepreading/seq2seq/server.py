@@ -9,6 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from ..shared import util, variables
 import numpy as np
+import copy
 
 alphabet = list("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.,;:!?-+*()[]&/ \"#")  # %:;&#
 alphabet.insert(0, chr(0))  # '\x00' character, i.e., ord(0) to label concatenate
@@ -88,14 +89,129 @@ def inference(model_input):
     return decoded_sentence
 
 
+# Class used for beam search
+class Beam(object):
+    max_length = 20
+    alpha = 0.7
+
+    def __init__(self, probability, decoded_sentence, state, stopping_condition=False):
+        self.probabilities = []
+        self.probabilities.append(probability)
+        self.decoded_sentence = decoded_sentence
+        self.state = state
+        self.stopping_condition = stopping_condition
+        self.num_decoded_chars = 0
+
+    def append(self, probablitiy, char, state):
+        self.probabilities.append(probablitiy)
+        self.decoded_sentence = self.decoded_sentence + char
+        self.state = state
+        self.num_decoded_chars += 1
+        if(self.num_decoded_chars >= self.max_length or char == "\n"):
+            self.stopping_condition = True
+
+    @property
+    def log_probability(self):
+        return np.power(1.0 / self.num_decoded_chars, self.alpha) * sum([np.log(prob) for prob in self.probabilities])
+        # return sum([np.log(prob) for prob in self.probabilities])
+
+    @property
+    def probability(self):
+        return np.prod(self.probabilities)
+
+    @property
+    def char(self):
+        return self.decoded_sentence[-1]
+
+    def target_sequence(self, position):
+        target_seq = np.zeros([1, 1, len(alphabet)])
+        target_seq[0, 0, position] = 1
+        return target_seq
+
+
+def beam_search(model_input, beam_width=5):
+    # label encoder
+    label_encoder = LabelEncoder()
+    label_encoder.fit(alphabet)
+
+    # generate the output of the encoder
+    states_value = encoder_model.predict(model_input)
+
+    # Generate starting Beam
+    beam = Beam(1.0, "\t", states_value)
+    beams = [beam]
+
+    # beam search
+    selected_beams = []
+    while len(selected_beams) < beam_width:
+        new_beams = []
+        for beam in beams:
+            # Don't expand on already finished beam
+            if beam.stopping_condition:
+                continue
+
+            # get the target sequence
+            position = label_encoder.transform([beam.char])
+            target_seq = beam.target_sequence(position)
+
+            # compute probabilities
+            output_tokens, h, c = decoder_model.predict([target_seq] + beam.state)
+
+            states = [h, c]
+
+            # For each probability add a new entry into the list
+            probabilities = output_tokens[0, 0, :]
+            for index, prob in enumerate(probabilities):
+                char = label_encoder.inverse_transform([index])[0]
+
+                # create a new copy of beam and append it to the list
+                beam_copy = copy.deepcopy(beam)
+                beam_copy.append(prob, char, states)
+                new_beams.append(beam_copy)
+                
+        # Sort list descendetly based on their probability
+        new_beams.sort(reverse=True, key=lambda beam: beam.log_probability)
+
+        # extract top beams
+        beams = new_beams[:beam_width]
+
+        # if one beam in top five is finished, select them
+        for beam in beams:
+            if beam.stopping_condition: 
+                selected_beams.append(beam)
+
+        # cut selected beams to length of beam_width
+        selected_beams = selected_beams[:beam_width]
+
+        # sort selected beams
+        selected_beams.sort(reverse=True, key=lambda beam: beam.log_probability)
+
+    return selected_beams
+
+
+def beams_to_result(beams):
+    result_dict = {}
+    for beam in beams:
+        # remove starting and ending tokens
+        result_string = beam.decoded_sentence[1:-1]
+        result_dict[result_string] = beam.probability
+    return result_dict
+
+
 app = Flask(__name__)
 cors = CORS(app)
 @app.route('/', methods=['POST'])
 def evaluate():
     input_json = request.json
-    model_input, _ = util.parse_json(input_json)
-    result = inference(model_input)
-    return {"result": result}
+    model_input, beam_width = util.parse_json(input_json)
+
+    # greedy algorithm
+    # result = inference(model_input)
+
+    # beam search
+    beams = beam_search(model_input, beam_width)
+    result = beams_to_result(beams)
+    return result
 
 
 def main():
