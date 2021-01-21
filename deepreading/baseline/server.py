@@ -29,7 +29,7 @@ def evaluate():
 
 
 def main():
-    serve(app, host='0.0.0.0', port=variables.BASELINE_PORT, threads=100)
+    serve(app, host='0.0.0.0', port=variables.BASELINE_PORT, threads=100, url_scheme="https")
 
 
 if __name__ == "__main__":
