@@ -16,10 +16,11 @@ alphabet.insert(0, chr(0))
 model = load_model('./deepreading/baseline/model/baseline_model.hdf5')
 
 
-@app.route('/', methods=['POST'])
-def evaluate():
+@app.route('/', defaults={'u_path': ''})
+@app.route('/<path:u_path')
+def evaluate(u_path):
     input_json = request.json
-    if len(input_json['word_stroke']) != 0:
+    if input_json and len(input_json['word_stroke']) != 0:
         model_input, num_interpretations = util.parse_json(input_json)
         model_output = model.predict(model_input)
         result = util.process_result(model_output, alphabet, num_interpretations)
