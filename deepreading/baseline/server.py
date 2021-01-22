@@ -20,7 +20,7 @@ model = load_model('./deepreading/baseline/model/baseline_model.hdf5')
 @app.route('/<path:u_path>')
 def evaluate(u_path):
     input_json = request.json
-    if input_json and len(input_json['word_stroke']) != 0:
+    if len(input_json['word_stroke']) != 0:
         model_input, num_interpretations = util.parse_json(input_json)
         model_output = model.predict(model_input)
         result = util.process_result(model_output, alphabet, num_interpretations)
