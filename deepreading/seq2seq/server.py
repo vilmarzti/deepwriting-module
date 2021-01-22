@@ -201,9 +201,10 @@ def beams_to_result(beams):
 app = Flask(__name__)
 cors = CORS(app)
 
+
 @app.route('/', defaults={'u_path': ''})
 @app.route('/<path:u_path')
-def evaluate():
+def evaluate(u_path):
     input_json = request.json
     model_input, beam_width = util.parse_json(input_json)
 
