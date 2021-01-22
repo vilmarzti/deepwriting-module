@@ -17,7 +17,7 @@ model = load_model('./deepreading/baseline/model/baseline_model.hdf5')
 
 
 @app.route('/', defaults={'u_path': ''})
-@app.route('/<path:u_path')
+@app.route('/<path:u_path>')
 def evaluate(u_path):
     input_json = request.json
     if input_json and len(input_json['word_stroke']) != 0:
