@@ -203,7 +203,7 @@ cors = CORS(app)
 
 
 @app.route('/', defaults={'u_path': ''})
-@app.route('/<path:u_path')
+@app.route('/<path:u_path>')
 def evaluate(u_path):
     input_json = request.json
     model_input, beam_width = util.parse_json(input_json)
