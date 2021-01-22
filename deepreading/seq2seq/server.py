@@ -216,7 +216,7 @@ def evaluate(u_path):
         beams = beam_search(model_input, beam_width)
         result = beams_to_result(beams)
         return result
-    else
+    else:
         return {}
 
 
