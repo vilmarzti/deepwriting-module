@@ -206,14 +206,15 @@ cors = CORS(app)
 @app.route('/<path:u_path>')
 def evaluate(u_path):
     input_json = request.json
-    model_input, beam_width = util.parse_json(input_json)
+    if input_json and len(input_json['word_stroke']) != 0:
+        model_input, beam_width = util.parse_json(input_json)
 
-    # greedy algorithm
-    # result = inference(model_input)
+        # greedy algorithm
+        # result = inference(model_input)
 
-    # beam search
-    beams = beam_search(model_input, beam_width)
-    result = beams_to_result(beams)
+        # beam search
+        beams = beam_search(model_input, beam_width)
+        result = beams_to_result(beams)
     return result
 
 
