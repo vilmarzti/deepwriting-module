@@ -202,11 +202,11 @@ app = Flask(__name__)
 cors = CORS(app)
 
 
-@app.route('/', defaults={'u_path': ''})
-@app.route('/<path:u_path>')
+@app.route('/', defaults={'u_path': ''}, methods=["POST"])
+@app.route('/<path:u_path>', methods=["POST"])
 def evaluate(u_path):
     input_json = request.json
-    if len(input_json['word_stroke']) != 0:
+    if input_json and len(input_json['word_stroke']) != 0:
         model_input, beam_width = util.parse_json(input_json)
 
         # greedy algorithm
